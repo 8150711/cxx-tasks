@@ -40,20 +40,21 @@ squares_wrapper operator<<(std::ostream &os, squares_instance)
 //}
 
 //{ add manipulator
-struct add_instance {} add;
+const struct add_instance {} add;
 
-template<typename OpType>
+template<typename OpType1>
 class add_wrapper_op2
 {
 public:
-    add_wrapper_op2(std::ostream &os, OpType const &op1) :  os_(os), op1_(op1) {}
+    add_wrapper_op2(std::ostream &os, OpType1 const &op1) :  os_(os), op1_(op1) {}
 
-    std::ostream & operator<<(OpType const &op2)
+    template<typename OpType2>
+    std::ostream & operator<<(OpType2 const &op2)
     {
         return os_ << op1_ + op2;
     }
 private:
-    OpType const &op1_;
+    OpType1 const &op1_;
     std::ostream &os_;
 };
 
