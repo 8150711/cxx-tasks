@@ -16,19 +16,23 @@ public:
     ptr_holder(T* ptr): ptr_(ptr) {}
 
     //{ describe proxy object
-    class proxy: private ???
+    class proxy: private std::lock_guard<std::mutex>
     {
     public:
-        proxy(???): ???
+        proxy(T* ptr, std::mutex& mutex): ptr_(ptr), std::lock_guard<std::mutex>(mutex)
         {}
 
+        T *operator -> ()
+        {
+            return ptr_;
+        }
     private:
-        ???
+        T* ptr_;
     };
 
-    ??? operator -> () const
+    proxy operator -> () const
     {
-        return ???;
+        return proxy(ptr_, mutex_);
     }
     //}
 
