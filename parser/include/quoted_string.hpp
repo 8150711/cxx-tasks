@@ -14,7 +14,7 @@ namespace parser
     namespace x3 = boost::spirit::x3;
 
     //{ should be only one line
-    ... quated_string = ...
+    const auto quated_string = x3::lexeme['"' >> *(('\\' >> x3::char_) | (~x3::char_('"'))) >> '"'];
     //}
 }
 
