@@ -30,7 +30,7 @@ struct variant_decorator: public x3::variant<S...>
     template<class T>
     T& as()
     {
-        const_cast<T&>(const_cast<const variant_decorator *>(this)->as<T>());
+        return const_cast<T&>(const_cast<const variant_decorator*>(this)->as<T>());
     }
 
     template<class T>
