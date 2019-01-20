@@ -13,6 +13,7 @@ namespace
     std::string loads(const std::string& s)
     {
         //? Is copy constructor used?
+        //! Нет. Конструктор копирования принимает на вход константную ссылку на объект своего же типа. Если заглянуть внутрь метода load_from_string, то мы увидим, что он оперирует итераторами на начало и конец строки.
         return parser::load_from_string<std::string>(s, parser::quoted_string);
     }
 }
@@ -38,6 +39,7 @@ TEST_CASE("quoted_string::quote")
 TEST_CASE("quoted_string::newline")
 {
     //? Why is it so weird string?
+    //! Данный тест проверяет правильность работы парсера со строками, в которых есть перенос строки. Поэтому срока так растянута
     std::string s = R"("text with
 newlines
 ")";

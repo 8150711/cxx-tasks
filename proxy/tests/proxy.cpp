@@ -69,8 +69,10 @@ TEST_CASE("proxy::threadsafe")
     for (auto _ : boost::irange(0, 20))
     {
         //? Why I need ``std::promise`` here?
+        //! std::promise необходим, чтобы сначала вызвать p->sleep и только потом p-i. 
         std::promise<void> notifier;
         //? Why I don't use ``thr`` anywhere? How the innder thread will be released?
+        //! trh имеет тип std::future. Сам поток будет запущен сразу, как thr будет инициализирован и будет разрушен, как только будет разрушен trh
         auto thr = std::async([&p, &notifier]()
         {
             notifier.set_value();
