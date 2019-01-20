@@ -36,6 +36,7 @@ namespace types
     namespace csv
     {
         //? Which kind of types should I use to describe the CSV type?
+        //! Строку CSV можно представить в виде вектора из строк. Так как количество строк заранее не определено, то их тоже будем помещать в вектор. То есть сsv - vector<vector<string>>
         //{
         using csv = std::vector<std::vector<std::string>>;
         //}
@@ -47,7 +48,9 @@ namespace parser
     namespace csv
     {
         //? Why I need a x3::no_skip here? Where is the original of the error?
+        //! x3::no_skip превращает рассматриваемый тест в грамматический примитив (слово, число и т.д.). Это значит, что пробелы снаут составной частью рассматриваемого объекта, что нам и нужно https://www.boost.org/doc/libs/1_68_0/libs/spirit/doc/html/spirit/qi/reference/directive/lexeme.html
         //? Where is BOOST_SPIRIT_DEFINE? Is it necessary?
+        //! BOOST_SPIRIT_DEFINE здесь не нужен. В документации сказано: "We have a rule and its definition, we tie the rule with a rule definition using the BOOST_SPIRIT_DEFINE macro". Так как нет ркурсивных зависимостей, то мы можем использовать оператор =
         namespace x3 = boost::spirit::x3;
 
         //{ csv grammar

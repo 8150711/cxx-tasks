@@ -24,6 +24,7 @@ TEST_CASE("variant_decorator::constructors")
     SECTION("copy constructor")
     {
         //? Is it ``operator=`` or copy constructor?
+        //! Stacktrace отладчика говорит, что здесь используется конструктор копирования
         auto v2 = v;
         CHECK(boost::get<int>(v2) == 55);
     }
@@ -37,6 +38,7 @@ TEST_CASE("variant_decorator::as")
     CHECK(v.as<int>() == 45);
 
     //? Why shouldn't use just "text"?
+    //! "text" это указатель на char (стандартный тип данных), поэтому "text" будет приведен к bool, так как приведение к стандартному типу более приоритетно
     v = variant_decorator<std::string, bool>{"text"s};
     auto& inner = v.as<variant_decorator<std::string, bool>>();
     CHECK(inner.as<std::string>() == "text");
@@ -45,6 +47,7 @@ TEST_CASE("variant_decorator::as")
 TEST_CASE("variant_decorator::const")
 {
     //? Why I need ``variant_decorator<bool>{true}`` instead of just ``true``? Will it compile? Why?
+    //! true это блевская переменная (стандартный тип), поэтому онабудет приведена к int, так как приведение к стандартному типу более приоритетно
     variant_decorator<int, variant_decorator<bool>> v{variant_decorator<bool>{true}};
     //? How to avoid duplicates in ``as`` for const version?
     const auto& b = v.as<variant_decorator<bool>>();
