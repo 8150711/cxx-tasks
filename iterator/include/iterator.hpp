@@ -16,9 +16,71 @@
 
 //{ image iterator
 template<class Iterator>
-class image_iterator: public boost::iterator_adaptor<...>
+class image_iterator: public boost::iterator_adaptor<image_iterator<Iterator>, Iterator>
 {
+public:
+    explicit image_iterator(Iterator it, size_t width, size_t stride):
+        image_iterator::iterator_adaptor_(it), 
+        width_(width), 
+        stride_(stride)
+        {}
 
+private:
+    size_t width_;
+    size_t stride_;
+    size_t ind_ = 0;
+
+    friend class boost::iterator_core_access;
+
+    void increment()
+    {
+        if (ind_ % stride_ == 0)
+        {
+            ind_ += stride_ - width_ + 1;
+            this->base_reference() += stride_ - width_ + 1;
+        }
+        else
+        {
+            ind_++;
+            this->base_reference()++;
+        }
+    }
+
+    void decrement()
+    {
+        if (width_- ind_ % (int)stride_ == 0)
+        {
+            ind_ += width_- ind_ % (int)stride_ + 1;
+            this->base_reference() -= width_- ind_ % (int)stride_ + 1;
+        }
+        else
+        {
+            ind_--;
+            this->base_reference()--;
+        }
+    }
+
+
+    void advance( typename image_iterator::difference_type n )
+    {
+        int length = n;
+        int shift = length > 0 ? (ind_ % (int)stride_): -(width_- ind_ % (int)stride_);
+
+        length += (shift + length) / (int)width_ * (stride_ - width_);
+
+        this->base_reference() += length;
+        ind_ += length;
+    }
+
+    typename image_iterator::difference_type distance_to( image_iterator const & dst ) const
+    {
+        int n = dst.base() - this->base();
+        int rest = (n > 0) ? ind_ : dst.ind_ % stride_;
+        int s = abs(n) + rest;
+        int res = abs(n)/n * (s/(int)stride_ * (int)width_ + s % (int)stride_  - rest);
+
+        return res;
+    }
 };
 //}
 
