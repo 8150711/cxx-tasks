@@ -47,7 +47,7 @@ TEST_CASE("variant_decorator::as")
 TEST_CASE("variant_decorator::const")
 {
     //? Why I need ``variant_decorator<bool>{true}`` instead of just ``true``? Will it compile? Why?
-    //! true это блевская переменная (стандартный тип), поэтому онабудет приведена к int, так как приведение к стандартному типу более приоритетно
+    //! true это булевская переменная (стандартный тип), поэтому онабудет приведена к int, так как приведение к стандартному типу более приоритетно
     variant_decorator<int, variant_decorator<bool>> v{variant_decorator<bool>{true}};
     //? How to avoid duplicates in ``as`` for const version?
     const auto& b = v.as<variant_decorator<bool>>();

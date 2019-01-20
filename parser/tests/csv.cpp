@@ -43,7 +43,7 @@ TEST_CASE("csv::csv")
 
     auto i = parser::load_from_string<types::csv::csv>(s, parser::csv::csv);
     //? Why double parentheses?
-    //! Если откроем catch.hpp, то увидим, что макрос CHECK выгляить так: "#define CHECK( expr ) ". Это значит, что каждая запятая в выражении будет воспринята компилятором, как новый аргумент. Этого можно избежать, если обернуть все выражение в скобки
+    //! Если откроем catch.hpp, то увидим, что макрос CHECK выгляит так: "#define CHECK( expr ) ". Это значит, что каждая запятая в выражении будет воспринята компилятором, как новый аргумент. Этого можно избежать, если обернуть все выражение в скобки
     CHECK((i[0] == std::vector<std::string>{"cell1", "cell2", "cell3"}));
     CHECK((i[1] == std::vector<std::string>{"miet", "msu", "mephi"}));
     CHECK(i[2][0] == "with spaces");
